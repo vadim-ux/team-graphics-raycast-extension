@@ -9,8 +9,6 @@
   [![TypeScript](https://img.shields.io/badge/TypeScript-blue)](https://www.typescriptlang.org/)
 </div>
 
-# Team Graphics Library
-
 Raycast extension for quick access to team PNG assets - logos, icons, templates and other graphics.
 
 ## Features
