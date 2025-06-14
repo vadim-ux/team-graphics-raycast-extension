@@ -1,3 +1,14 @@
+<div align="center">
+  <img src="assets/extension-icon.png" alt="Team Graphics Library" width="128" height="128">
+  
+  # Team Graphics Library
+  
+  *Raycast extension for quick access to team graphics and logos*
+  
+  [![Raycast](https://img.shields.io/badge/Raycast-Extension-red)](https://raycast.com/)
+  [![TypeScript](https://img.shields.io/badge/TypeScript-blue)](https://www.typescriptlang.org/)
+</div>
+
 # Team Graphics Library
 
 Raycast extension for quick access to team PNG assets - logos, icons, templates and other graphics.
