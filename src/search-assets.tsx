@@ -1,7 +1,7 @@
 import { ActionPanel, Action, Icon, Grid, showToast, Toast, Clipboard } from "@raycast/api";
 import { useState, useEffect } from "react";
 
-// Интерфейс для элементов библиотеки
+// Interface for library elements
 interface AssetItem {
   id: string;
   name: string;
@@ -12,7 +12,7 @@ interface AssetItem {
   size: string;
 }
 
-// Интерфейс для metadata.json
+// Interface for metadata.json
 interface AssetLibrary {
   name: string;
   version: string;
@@ -24,10 +24,10 @@ export default function Command() {
   const [assets, setAssets] = useState<AssetItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // URL твоего GitHub репозитория
+  // GH repo URL
   const METADATA_URL = "https://raw.githubusercontent.com/vadim-ux/team-graphics-library-official/main/metadata.json";
 
-  // Загружаем данные из GitHub
+  // Loading data from GH
   useEffect(() => {
     async function fetchAssets() {
       try {
@@ -52,7 +52,7 @@ export default function Command() {
     fetchAssets();
   }, []);
 
-  // Функция для копирования URL изображения
+  // Function to copy image URL
   async function copyImageUrl(asset: AssetItem) {
     try {
       await Clipboard.copy(asset.url);
@@ -70,7 +70,7 @@ export default function Command() {
     }
   }
 
-  // Группируем assets по категориям
+  // Function to copy image URL
   const groupedAssets = assets.reduce((groups, asset) => {
     const category = asset.category || 'Other';
     if (!groups[category]) {
