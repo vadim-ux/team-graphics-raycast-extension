@@ -23,6 +23,7 @@ interface AssetLibrary {
 export default function Command() {
   const [assets, setAssets] = useState<AssetItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState("all");
 
   // GH repo URL
   const METADATA_URL = "https://raw.githubusercontent.com/vadim-ux/team-graphics-library-official/main/metadata.json";
@@ -48,7 +49,6 @@ export default function Command() {
         setIsLoading(false);
       }
     }
-
     fetchAssets();
   }, []);
 
@@ -70,8 +70,20 @@ export default function Command() {
     }
   }
 
-  // Function to copy image URL
-  const groupedAssets = assets.reduce((groups, asset) => {
+  // Get unique categories with counts
+  const categories = assets.reduce((acc, asset) => {
+    const category = asset.category || 'Other';
+    acc[category] = (acc[category] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
+
+  // Filter assets by selected category
+  const filteredAssets = selectedCategory === "all" 
+    ? assets 
+    : assets.filter(asset => asset.category === selectedCategory);
+
+  // Group filtered assets by category
+  const groupedAssets = filteredAssets.reduce((groups, asset) => {
     const category = asset.category || 'Other';
     if (!groups[category]) {
       groups[category] = [];
@@ -80,8 +92,56 @@ export default function Command() {
     return groups;
   }, {} as Record<string, AssetItem[]>);
 
+  function getCategoryIcon(category: string): Icon {
+    switch (category.toLowerCase()) {
+      case "logos":
+        return Icon.Building;
+      case "icons":
+        return Icon.AppWindowGrid3x3;
+      case "illustrations":
+        return Icon.Image;
+      case "photos":
+        return Icon.Camera;
+      case "graphics":
+        return Icon.Palette;
+      default:
+        return Icon.Folder;
+    }
+  }
+
   return (
-    <Grid isLoading={isLoading} searchBarPlaceholder="Search team graphics..." columns={6}>
+    <Grid 
+      isLoading={isLoading} 
+      searchBarPlaceholder="Search team graphics..." 
+      columns={8}
+      searchBarAccessory={
+        <Grid.Dropdown
+          tooltip="Select Category"
+          storeValue={true}
+          onChange={(newValue) => setSelectedCategory(newValue)}
+        >
+          <Grid.Dropdown.Section title="Categories">
+            <Grid.Dropdown.Item 
+              key="all" 
+              title={`All Assets (${assets.length})`} 
+              value="all" 
+              icon={Icon.Grid3x3}
+            />
+            {Object.entries(categories)
+              .sort(([a], [b]) => a.localeCompare(b))
+              .map(([category, count]) => (
+                <Grid.Dropdown.Item
+                  key={category}
+                  title={`${category.charAt(0).toUpperCase() + category.slice(1)} (${count})`}
+                  value={category}
+                  icon={getCategoryIcon(category)}
+                />
+              ))
+            }
+          </Grid.Dropdown.Section>
+        </Grid.Dropdown>
+      }
+    >
       {Object.entries(groupedAssets).map(([category, categoryAssets]) => (
         <Grid.Section key={category} title={category.charAt(0).toUpperCase() + category.slice(1)}>
           {categoryAssets.map((asset) => (
