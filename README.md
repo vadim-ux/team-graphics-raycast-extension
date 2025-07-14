@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="assets/extension-icon.png" alt="Team Graphics Library" width="128" height="128">
+  <img src="png/assets/extension-icon.png" alt="Team Graphics Library" width="128" height="128">
 
 # Team Graphics Library
 
